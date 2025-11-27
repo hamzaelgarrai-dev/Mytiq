@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +40,15 @@ Route::get('/tickets/{id}/download', [TicketController::class, 'download'])
 // Liste tickets par event (admin)
 Route::get('/admin/events/{id}/tickets', [TicketController::class, 'eventTickets'])
     ->middleware(['auth:sanctum', 'admin']);
+// Event EndPoints
+
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::post('/events' , [EventController::class , 'store']);
+    Route::put('/events/{id}' , [EventController::class , 'update']);
+    Route::delete('/events/{id}' , [EventController::class , 'destroy']);
+});
+
+Route::get('/events' , [EventController::class , 'index']);
+Route::get('/events/{id}' , [EventController::class , 'show']);
+
 
