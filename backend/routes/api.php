@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\EventController;
 
 /*
@@ -27,6 +28,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
+
+/// Achat
+Route::post('/events/{id}/purchase', [TicketController::class, 'purchase'])
+    ->middleware('auth:sanctum');
+
+// Téléchargement ticket 
+Route::get('/tickets/{id}/download', [TicketController::class, 'download'])
+    ->middleware('auth:sanctum');
+
+// Liste tickets par event (admin)
+Route::get('/admin/events/{id}/tickets', [TicketController::class, 'eventTickets'])
+    ->middleware(['auth:sanctum', 'admin']);
 // Event EndPoints
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
