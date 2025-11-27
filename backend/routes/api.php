@@ -2,11 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\EventController;
-use App\Http\Controllers\Api\TicketController;
-use App\Http\Controllers\Api\NewsletterController;
 
+use App\Http\Controllers\NewsletterController;
 
 
 // Newsletter subscription (public)
