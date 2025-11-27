@@ -8,43 +8,59 @@ use App\Http\Requests\UpdateNewsLetterRequest;
 
 class NewsLetterController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function subscribe(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:news_letters,email'
+        ]);
+
+        try {
+            $subscriber = Newsletter::create([
+                'email' => $request->email
+        
+            ]);
+
+            return response()->json([
+                'message' => 'Successfully subscribed to newsletter',
+                'subscriber' => $subscriber
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to subscribe',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+   
     public function index()
     {
-        //
+        $subscribers = Newsletter::all();
+        return response()->json($subscribers);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreNewsLetterRequest $request)
+    
+    public function show($id)
     {
-        //
+        $subscriber = Newsletter::find($id);
+        
+        if (!$subscriber) {
+            return response()->json(['message' => 'Subscriber not found'], 404);
+        }
+        
+        return response()->json($subscriber);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(NewsLetter $newsLetter)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateNewsLetterRequest $request, NewsLetter $newsLetter)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(NewsLetter $newsLetter)
-    {
-        //
+        $subscriber = Newsletter::find($id);
+        
+        if (!$subscriber) {
+            return response()->json(['message' => 'Subscriber not found'], 404);
+        }
+        
+        $subscriber->delete();
+        
+        return response()->json(['message' => 'Subscriber removed successfully']);
     }
 }
