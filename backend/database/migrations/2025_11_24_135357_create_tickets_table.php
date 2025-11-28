@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('Qrcode');
+            $table->string('qrcode')->nullable();
+            $table->string('pdf_path')->nullable();
             $table->foreignId("user_id")->constrained("users")->onDelete("cascade");
             $table->foreignId("event_id")->constrained("events")->onDelete("cascade");
             $table->timestamps();

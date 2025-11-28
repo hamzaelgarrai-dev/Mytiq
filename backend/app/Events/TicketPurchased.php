@@ -2,19 +2,28 @@
 
 namespace App\Events;
 
-use App\Models\Ticket;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class TicketPurchased
 {
     use Dispatchable, SerializesModels;
 
-    public $ticket;
+    /**
+     * Tableau contenant 'ticket', 'user', 'event', 'payload'...
+     *
+     * @var array
+     */
+    public $data;
 
-    public function __construct(Ticket $ticket)
+    /**
+     * Create a new event instance.
+     *
+     * @param array $data
+     */
+    public function __construct(array $data)
     {
-        $this->ticket = $ticket;
+        $this->data = $data;
     }
 }
 
