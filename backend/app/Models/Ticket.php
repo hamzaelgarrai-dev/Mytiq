@@ -11,7 +11,8 @@ class Ticket extends Model
     protected $fillable = [
         'user_id',
         'event_id',
-        'price'
+        'qrcode',
+        'pdf_path',
     ];
       public function user()
     {
