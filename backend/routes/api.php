@@ -6,16 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\EventController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\NewsletterController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -46,3 +37,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/tickets', [TicketController::class, 'allTickets']); // admin middleware à ajouter
     Route::get('/events/{id}/tickets', [TicketController::class, 'eventTickets']); // admin
     });
+
+
+// Newsletter subscription (public)
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
+
+// Newsletter subscribers management (admin only)
+Route::get('/newsletter/subscribers', [NewsletterController::class, 'index']);
+Route::get('/newsletter/subscribers/{id}', [NewsletterController::class, 'show']);
+Route::delete('/newsletter/subscribers/{id}', [NewsletterController::class, 'destroy']);
