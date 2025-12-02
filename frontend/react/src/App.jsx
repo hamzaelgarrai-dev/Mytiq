@@ -6,6 +6,64 @@ import EventDetails from './pages/EventDetails';
 import MyTickets from './pages/MyTickets';
 
 export default function App() {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [currentPath, setCurrentPath] = useState("/");
+
+  const isAuthenticated = !!user;
+  const isAdmin = user?.role === "admin";
+
+  const navigate = (path) => setCurrentPath(path);
+
+  const handleLogin = (loggedUser, token) => {
+    setUser(loggedUser);
+    setToken(token);
+    setCurrentPath("/");
+  };
+
+  const handleRegister = (registeredUser, token) => {
+    setUser(registeredUser);
+    setToken(token);
+    setCurrentPath("/");
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setToken(null);
+    setCurrentPath("/connexion");
+  };
+
+  const renderPage = () => {
+    switch (currentPath) {
+      case "/connexion":
+        return <Login onLogin={handleLogin} />;
+      case "/inscription":
+        return <Register onRegister={handleRegister} />;
+      case "/":
+        return (
+          <div>
+            <HeroSection />
+
+            {/* Filtres catégorie */}
+            <div className="mt-8 px-4">
+              <CategoryFilter />
+            </div>
+
+            {/* Section cartes d’événements */}
+            <div className="mt-12 px-4">
+              <EventCardSection />
+            </div>
+          </div>
+        );
+      default:
+        return (
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mt-12">Page non trouvée</h1>
+          </div>
+        );
+    }
+  };
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
