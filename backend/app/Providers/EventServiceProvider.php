@@ -6,6 +6,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\TicketPurchased;
+use App\Events\UserRegistered;
+use App\Listeners\SendRegisterEmail;
 use App\Listeners\SendTicketEmail;
 
 
@@ -25,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
          TicketPurchased::class => [
             SendTicketEmail::class,
         ],
+        UserRegistered::class => [
+        SendRegisterEmail::class,
+    ],
     ];
 
     /**

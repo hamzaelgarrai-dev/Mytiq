@@ -1,13 +1,11 @@
 import React from 'react'
 
-function Navbar() {
+const AddEventModal = () => {
   return (
-
     <>
         
     </>
-
   )
 }
 
-export default Navbar
+export default AddEventModal

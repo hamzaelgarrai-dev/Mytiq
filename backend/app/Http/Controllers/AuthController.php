@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserRegistered;
 use App\Http\Requests\loginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
@@ -18,6 +19,7 @@ class AuthController extends Controller
             'password' => $request->password,
         ]);
 
+        UserRegistered::dispatch($user);
         return response()->json(['message' => 'created successfully']);
     }
      public function login(loginRequest $request)
