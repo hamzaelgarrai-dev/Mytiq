@@ -6,8 +6,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Events\TicketPurchased;
-use App\Listeners\GenerateTicketPdf;
-use App\Listeners\SendTicketByEmail;
+use App\Events\UserRegistered;
+use App\Listeners\SendRegisterEmail;
 use App\Listeners\SendTicketEmail;
 
 
@@ -20,10 +20,15 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-
-        TicketPurchased::class => [
-        
-        SendTicketByEmail::class,
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+            
+        ],
+         TicketPurchased::class => [
+            SendTicketEmail::class,
+        ],
+        UserRegistered::class => [
+        SendRegisterEmail::class,
     ],
     ];
 
