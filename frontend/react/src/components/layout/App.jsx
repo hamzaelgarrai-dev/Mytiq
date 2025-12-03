@@ -1,11 +1,11 @@
 import { useState } from "react";
-import Navbar from "./components/layout/Navbar";
-import HeroSection from "./components/layout/HeroSection";
-import CategoryFilter from "./components/layout/CategoryFilter"; 
-import EventCardSection from "./components/layout/EventCardSection"; 
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Footer from "./components/layout/Footer";
+import Navbar from "./Navbar";
+import HeroSection from "./HeroSection";
+import CategoryFilter from "./CategoryFilter"; 
+import EventCardSection from "./EventCardSection"; 
+import Login from "../../pages/Login";
+import Register from "../../pages/Register";
+import Footer from "./Footer";
 
 export default function App() {
   const [user, setUser] = useState(null);
