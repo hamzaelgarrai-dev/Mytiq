@@ -12,15 +12,9 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import EventDetails from './pages/EventDetails';
 import MyTickets from './pages/MyTickets';
-
-
-
-
-
-
 export default function App() {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+   const [token, setToken] = useState(null);
   const [currentPath, setCurrentPath] = useState("/");
 
   const isAuthenticated = !!user;
@@ -39,8 +33,7 @@ export default function App() {
     setToken(token);
     setCurrentPath("/");
   };
-
-  const handleLogout = () => {
+ const handleLogout = () => {
     setUser(null);
     setToken(null);
     setCurrentPath("/connexion");
@@ -62,7 +55,7 @@ export default function App() {
               <CategoryFilter />
             </div>
 
-            {/* Section cartes d’événements */}
+ {/* Section cartes d’événements */}
             <div className="mt-12 px-4">
               <EventCardSection />
             </div>
@@ -84,7 +77,7 @@ export default function App() {
         <main className="flex-grow bg-gray-50">
           <Routes>
             <Route path="/event/:eventId" element={<EventDetails isAuthenticated={false} />} />
-            <Route path="/my-tickets" element={<MyTickets />} />
+ <Route path="/my-tickets" element={<MyTickets />} />
             {/* Route par défaut pour le développement */}
             <Route path="/" element={<EventDetails eventId="1" isAuthenticated={false} />} />
           </Routes>
@@ -92,5 +85,5 @@ export default function App() {
         <Footer />
       </div>
     </Router>
-  );
+  );
 }
