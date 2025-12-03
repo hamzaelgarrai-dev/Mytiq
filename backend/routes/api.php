@@ -19,18 +19,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
-
-/// Achat
-Route::post('/events/{id}/purchase', [TicketController::class, 'purchase'])
-    ->middleware('auth:sanctum');
-
-// Téléchargement ticket 
-Route::get('/tickets/{id}/download', [TicketController::class, 'download'])
-    ->middleware('auth:sanctum');
-
-// Liste tickets par event (admin)
-Route::get('/admin/events/{id}/tickets', [TicketController::class, 'eventTickets'])
-    ->middleware(['auth:sanctum', 'admin']);
 // Event EndPoints
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
@@ -42,6 +30,13 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 Route::get('/events' , [EventController::class , 'index']);
 Route::get('/events/{id}' , [EventController::class , 'show']);
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/events/{id}/purchase', [TicketController::class, 'purchase']);
+    Route::get('/tickets/{id}/download', [TicketController::class, 'download']);
+    Route::get('/tickets/my', [TicketController::class, 'myTickets']);
+    Route::get('/tickets', [TicketController::class, 'allTickets']); // admin middleware à ajouter
+    Route::get('/events/{id}/tickets', [TicketController::class, 'eventTickets']); // admin
+    });
 
 
 // Newsletter subscription (public)

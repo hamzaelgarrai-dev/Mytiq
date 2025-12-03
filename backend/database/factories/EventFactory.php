@@ -26,6 +26,7 @@ class EventFactory extends Factory
             'capacity'=>fake()->randomNumber(4),
             'status'=>fake()->randomElement(['disponible','terminer']),
             'aviliable_tickets'=>fake()->randomNumber(3),
+            'image_url'=>fake()->imageUrl()
             
         ];
     }
