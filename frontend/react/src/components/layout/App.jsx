@@ -1,3 +1,11 @@
+import { useState } from "react";
+import Navbar from "./Navbar";
+import HeroSection from "./HeroSection";
+import CategoryFilter from "./CategoryFilter"; 
+import EventCardSection from "./EventCardSection"; 
+import Login from "../../pages/Login";
+import Register from "../../pages/Register";
+import Footer from "./Footer";
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
