@@ -13,6 +13,11 @@ import Footer from './components/layout/Footer';
 import EventDetails from './pages/EventDetails';
 import MyTickets from './pages/MyTickets';
 
+
+
+
+
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
