@@ -20,7 +20,7 @@ const STATIC_EVENT = {
 };
 
 export default function EventDetails({ isAuthenticated }) {
-  const { eventId } = useParams();
+  const { id } = useParams(); // Changed from eventId to id to match route /:id
   // On utilise directement les données statiques
   const event = STATIC_EVENT;
 

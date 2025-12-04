@@ -1,5 +1,5 @@
 import React from 'react';
-import TicketIcon from '../assets/ticket-icon.png';
+import logoImage from '../assets/logo.png';
 
 export default function MyTickets() {
     return (
@@ -17,21 +17,30 @@ export default function MyTickets() {
 
                     {/* En-tête bleu du billet */}
                     <div className="bg-blue-400 p-6 flex justify-between items-start text-white relative overflow-hidden">
+                        
+                        {/* 1. PARTIE GAUCHE (Titre et Badge) */}
                         <div className="relative z-10">
                             <h2 className="text-xl font-bold mb-2">Festival Mawazine 2025</h2>
                             <span className="bg-white/20 px-4 py-1 rounded-full text-sm font-medium backdrop-blur-sm">
                                 Musique
                             </span>
                         </div>
-                        {/* Icône billet décorative */}
+
+                        {/* 2. PARTIE DROITE (Logo) */}
+                        {/* Le logo est maintenant au même niveau que le bloc de texte pour que justify-between fonctionne */}
                         <div className="relative z-10">
-                            <img src={TicketIcon} alt="Ticket Icon" className="w-12 h-12 opacity-80" />
+                            <img 
+                                src={logoImage} 
+                                alt="Icône décorative du billet" 
+                                className="w-12 h-12 opacity-80" 
+                            />
                         </div>
+
                     </div>
 
                     {/* Corps du billet */}
                     <div className="p-6 space-y-6">
-
+                        
                         {/* Date */}
                         <div className="flex items-start gap-4">
                             <div className="p-2 bg-blue-50 rounded-lg text-blue-400">

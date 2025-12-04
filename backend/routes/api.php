@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::delete('/events/{id}' , [EventController::class , 'destroy']);
 });
 
-Route::get('/events' , [EventController::class , 'index']);
+// Route::get('/events' , [EventController::class , 'index']);
 Route::get('/events/{id}' , [EventController::class , 'show']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -46,3 +46,5 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 Route::get('/newsletter/subscribers', [NewsletterController::class, 'index']);
 Route::get('/newsletter/subscribers/{id}', [NewsletterController::class, 'show']);
 Route::delete('/newsletter/subscribers/{id}', [NewsletterController::class, 'destroy']);
+
+Route::get('/events' , [EventController::class , 'index']);
