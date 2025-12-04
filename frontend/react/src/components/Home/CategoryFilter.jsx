@@ -4,8 +4,8 @@ import { Calendar, Music, Smile, Trophy, Palette, Computer } from "lucide-react"
 // Couleur personnalisée pour le bouton actif
 const customBlue = "#6EBAFB";
 
-const CategoryFilter = () => {
-  const [activeCategory, setActiveCategory] = useState("tous");
+const CategoryFilter = ({ activeCategory, onCategoryChange }) => {
+  // const [activeCategory, setActiveCategory] = useState("tous"); // State lifted to Home.jsx
 
   const categories = [
     { id: "tous", name: "Tous", Icon: Calendar },
@@ -17,8 +17,8 @@ const CategoryFilter = () => {
   ];
 
   const handleCategoryClick = (categoryId) => {
-    setActiveCategory(categoryId);
-    console.log(`Filtre activé: ${categoryId}`);
+    onCategoryChange(categoryId);
+    // console.log(`Filtre activé: ${categoryId}`);
   };
 
   return (
