@@ -1,29 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Header from '../components/Home/HeroSection'
 import CategoryFilter from '../components/Home/CategoryFilter'
 import EventCardSection from '../components/Home/EventCardSection'
-import { fetchEvents } from '../api/events'
+import { useEvents } from '../context/EventsContext'
 
 const Home = () => {
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { events, loading, error } = useEvents();
   const [activeCategory, setActiveCategory] = useState("tous");
-
-  useEffect(() => {
-    const loadEvents = async () => {
-      try {
-        const data = await fetchEvents();
-        setEvents(data);
-      } catch (err) {
-        setError("Impossible de charger les événements.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadEvents();
-  }, []);
 
   const filteredEvents = activeCategory === "tous"
     ? events
@@ -42,7 +25,7 @@ const Home = () => {
         <CategoryFilter activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
       </div>
 
-      {/* Section cartes d’événements */}
+      {/* Section cartes d'événements */}
       <div className="mt-12 px-4">
         <EventCardSection events={filteredEvents} />
       </div>
