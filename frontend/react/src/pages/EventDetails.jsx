@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EventImage from "../components/EventDetails/EventImage";
 import EventInfo from "../components/EventDetails/EventInfo";
 import EventPriceBox from "../components/EventDetails/EventPriceBox";
 import ReservationCard from "../components/EventDetails/ReservationCard";
+import { Link } from "react-router-dom";
 
 // Données statiques avec image Cloudinary
 const STATIC_EVENT = {
@@ -42,13 +43,16 @@ export default function EventDetails({ isAuthenticated }) {
       setBuying(false);
     }, 1000);
   };
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  },[])
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 space-y-8">
       {/* Bouton retour */}
-      <button className="text-gray-600 mb-4 hover:text-blue-600 flex items-center gap-2 transition-colors">
+      <Link to="/" className="text-gray-600 mb-4 hover:text-blue-600 flex items-center gap-2 transition-colors">
         <span>&larr;</span> Retour aux événements
-      </button>
+      </Link>
 
       <div className="md:flex md:gap-8">
         {/* Colonne principale : Image et Informations */}

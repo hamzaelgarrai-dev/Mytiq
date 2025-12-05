@@ -31,8 +31,9 @@ class StoreEventRequest extends FormRequest
             "capacity"=> "required|integer",
             "status"=> "required|string|max:255",
             "aviliable_tickets"=> "required|integer",
-            "image"=> "required|image|max:4048"
+            "image"=> "required|image|max:10240"  // 10MB au lieu de 4MB
             
         ];
     }
 }
+

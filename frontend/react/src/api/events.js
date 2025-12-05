@@ -24,3 +24,19 @@ export const deleteEvent = async (eventId, token) => {
   }
 };
 
+export const createEvent = async (eventData, token) => {
+  try {
+    const response = await axios.post(`${API_URL}/events`, eventData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error creating event:", error);
+    console.error("Response:", error.response?.data);
+    throw error;
+  }
+};
+
