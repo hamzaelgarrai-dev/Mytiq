@@ -28,3 +28,15 @@ export const fetchEventTickets = async (eventId, token) => {
     }
 };
 
+// Get user's own tickets
+export const fetchMyTickets = async (token) => {
+    try {
+        const response = await axios.get(`${API_URL}/tickets/my`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data || [];
+    } catch (error) {
+        console.error("Error fetching my tickets:", error);
+        throw error;
+    }
+};
