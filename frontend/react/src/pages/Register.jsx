@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Mail, Lock, User, AlertTriangle, Calendar } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 const customBlue = '#6EBAFB';
 
@@ -23,18 +25,20 @@ const InputField = ({ Icon, type, placeholder, name, label, value, onChange }) =
   </div>
 );
 
-const RegisterPage = ({ onSubmit, authError, loading, switchToLogin }) => {
-  const [fullName, setFullName] = useState('');
+const RegisterPage = () => {
+  const [name, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [localError, setLocalError] = useState(null);
+  const [shouldSubmit, setShouldSubmit] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setLocalError(null);
 
-    if (!fullName || !email || !password || !confirmPassword)
+    if (!name || !email || !password || !confirmPassword)
       return setLocalError("Veuillez remplir tous les champs.");
 
     if (password.length < 8)
@@ -43,11 +47,33 @@ const RegisterPage = ({ onSubmit, authError, loading, switchToLogin }) => {
     if (password !== confirmPassword)
       return setLocalError("Les mots de passe ne correspondent pas.");
 
-    onSubmit(fullName, email, password);
+    setShouldSubmit(true);
   };
 
+  useEffect(() => {
+    if (!shouldSubmit) return;
+
+    const register = async () => {
+      try {
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/register",
+          { name, email, password ,password_confirmation: confirmPassword }
+        );
+        navigate("/login");
+
+        console.log("Account created:", res.data);
+      } catch (err) {
+        setLocalError(err.response?.data?.message || "Registration failed");
+      } finally {
+        setShouldSubmit(false);
+      }
+    };
+
+    register();
+  }, [shouldSubmit]);
+
   return (
-    <div className="flex flex-col items-center justify-center p-6 sm:p-10 bg-white rounded-3xl shadow-2xl max-w-md mx-auto mt-24 mb-12 transform hover:scale-[1.01] transition-transform duration-300">
+    <div className="flex flex-col items-center justify-center p-6 sm:p-10 bg-white rounded-3xl shadow-2xl max-w-md mx-auto mt-24 mb-12">
       <Calendar className="h-10 w-10 mb-4" style={{ color: customBlue }} />
 
       <h2 className="text-2xl font-bold text-gray-800 mb-2">Créer un compte</h2>
@@ -56,10 +82,10 @@ const RegisterPage = ({ onSubmit, authError, loading, switchToLogin }) => {
         Inscrivez-vous pour commencer à réserver vos événements
       </p>
 
-      {(localError || authError) && (
+      {localError && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm flex items-center">
           <AlertTriangle className="h-5 w-5 mr-2" />
-          {localError || authError}
+          {localError}
         </div>
       )}
 
@@ -70,14 +96,14 @@ const RegisterPage = ({ onSubmit, authError, loading, switchToLogin }) => {
           placeholder="Nom complet"
           name="fullName"
           label="Nom complet"
-          value={fullName}
+          value={name}
           onChange={(e) => setFullName(e.target.value)}
         />
 
         <InputField
           Icon={Mail}
           type="email"
-          placeholder="votre@email.com"
+          placeholder="email"
           name="email"
           label="Email"
           value={email}
@@ -106,23 +132,12 @@ const RegisterPage = ({ onSubmit, authError, loading, switchToLogin }) => {
 
         <button
           type="submit"
-          disabled={loading}
-          className="w-full text-white font-semibold py-3 px-4 rounded-xl transition duration-300 shadow-lg hover:shadow-xl mt-4 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full text-white font-semibold py-3 px-4 rounded-xl mt-4"
           style={{ backgroundColor: customBlue }}
         >
-          {loading ? 'Inscription...' : "S'inscrire"}
+          S'inscrire
         </button>
       </form>
-
-      <p className="mt-6 text-sm text-gray-500">
-        Déjà un compte ?
-        <span
-          onClick={switchToLogin}
-          className="ml-1 font-semibold text-blue-400 cursor-pointer hover:underline"
-        >
-          Se connecter
-        </span>
-      </p>
     </div>
   );
 };

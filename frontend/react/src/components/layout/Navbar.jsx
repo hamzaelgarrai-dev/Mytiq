@@ -1,39 +1,55 @@
 import React, { useState } from "react";
-import { LogIn, UserPlus, Home } from "lucide-react";
-import { Link } from "react-router-dom";
-import logoMytiq from '../../assets/logoMytiq.jpeg';
+import { LogIn, UserPlus, Home, LayoutDashboard, Ticket } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import logoMytiq from "../../assets/logoMytiq.jpeg";
 
-const Navbar = ({ isAuthenticated, user, onLogout }) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
   const customBlue = "#6EBAFB";
+  const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAuthenticated = !!user;
+
+  const onLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+    window.location.reload();
+  };
 
   return (
     <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-        <Link to="/" className="text-2xl font-bold text-gray-800 hover:text-blue-500 transition">
-        <img 
-            src={logoMytiq} 
-            alt="Logo MyTiq" 
-            className="w-15 h-15" 
-        />
+
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold text-gray-800">
+          <img src={logoMytiq} alt="Logo MyTiq" className="w-15 h-15" />
         </Link>
 
+        {/* Desktop Links */}
         <nav className="hidden md:flex flex-1 justify-center space-x-6">
           <Link to="/" className="flex items-center gap-1 text-gray-700 hover:text-blue-500 transition">
             <Home className="h-5 w-5" /> Accueil
           </Link>
-          {/* Ajoute d'autres liens si nécessaire */}
+
+          {/* ADMIN ONLY */}
+          {user?.role === "admin" && (
+            <Link to="/dashboard" className="flex items-center gap-1 text-gray-700 hover:text-blue-500 transition">
+              <LayoutDashboard className="h-5 w-5" /> Dashboard
+            </Link>
+          )}
+
+          {/* USER ONLY */}
+          {user?.role === "user" && (
+            <Link to="/my-tickets" className="flex items-center gap-1 text-gray-700 hover:text-blue-500 transition">
+              <Ticket className="h-5 w-5" /> Mes Tickets
+            </Link>
+          )}
         </nav>
 
+        
         <div className="hidden md:flex items-center space-x-3">
-          {isAuthenticated ? (
-            <button
-              className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
-              onClick={onLogout}
-            >
-              Déconnexion
-            </button>
-          ) : (
+          {!isAuthenticated ? (
             <>
               <Link
                 to="/login"
@@ -41,6 +57,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
               >
                 <LogIn className="h-5 w-5" /> Connexion
               </Link>
+
               <Link
                 to="/register"
                 className="px-4 py-2 rounded-lg text-white flex items-center gap-1"
@@ -49,25 +66,57 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                 <UserPlus className="h-5 w-5" /> Inscription
               </Link>
             </>
+          ) : (
+            <button
+              className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
+              onClick={onLogout}
+            >
+              Déconnexion
+            </button>
           )}
         </div>
 
-        {/* Mobile Toggle */}
-        <button onClick={() => setOpen(!open)} className="md:hidden p-2 rounded-md border border-gray-200">
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden p-2 rounded-md border border-gray-200"
+        >
           {open ? "✕" : "☰"}
         </button>
       </div>
 
+      {/* Mobile Menu */}
       {open && (
         <div className="md:hidden flex flex-col px-6 pb-4 space-y-2 bg-white shadow-md border-t border-gray-200">
+
           <Link to="/" className="flex items-center px-4 py-2 rounded-lg hover:bg-gray-100 transition gap-2">
             <Home className="h-5 w-5" /> Accueil
           </Link>
-          {!isAuthenticated && (
+
+          {/* ADMIN ONLY */}
+          {user?.role === "admin" && (
+            <Link to="/dashboard" className="flex items-center px-4 py-2 rounded-lg hover:bg-gray-100 transition gap-2">
+              <LayoutDashboard className="h-5 w-5" /> Dashboard
+            </Link>
+          )}
+
+          {/* USER ONLY */}
+          {user?.role === "user" && (
+            <Link to="/my-tickets" className="flex items-center px-4 py-2 rounded-lg hover:bg-gray-100 transition gap-2">
+              <Ticket className="h-5 w-5" /> Mes Tickets
+            </Link>
+          )}
+
+          
+          {!isAuthenticated ? (
             <>
-              <Link to="/login" className="flex items-center px-4 py-2 rounded-lg hover:bg-gray-100 transition gap-2">
+              <Link
+                to="/login"
+                className="flex items-center px-4 py-2 rounded-lg hover:bg-gray-100 transition gap-2"
+              >
                 <LogIn className="h-5 w-5" /> Connexion
               </Link>
+
               <Link
                 to="/register"
                 className="flex items-center px-4 py-2 rounded-lg text-white"
@@ -76,8 +125,7 @@ const Navbar = ({ isAuthenticated, user, onLogout }) => {
                 <UserPlus className="h-5 w-5" /> Inscription
               </Link>
             </>
-          )}
-          {isAuthenticated && (
+          ) : (
             <button
               className="px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
               onClick={onLogout}
