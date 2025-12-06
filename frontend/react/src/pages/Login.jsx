@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Lock, AlertTriangle, Calendar } from 'lucide-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const customBlue = '#6EBAFB';
 
@@ -23,14 +25,56 @@ const InputField = ({ Icon, type, placeholder, name, label, value, onChange }) =
   </div>
 );
 
-const LoginPage = ({ onSubmit, authError, loading, switchToRegister }) => {
+const LoginPage = ({ switchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setAuthError('');
+    setLoading(true);
+
+    try {
+      if (!email || !password) {
+        setAuthError("Veuillez entrer un email et un mot de passe");
+        setLoading(false);
+        return;
+      }
+
+      const res = await axios.post("http://127.0.0.1:8000/api/login", {
+        email,
+        password,
+      });
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          token: res.data.token,
+          role: res.data.role,
+        })
+      );
+
+      navigate("/");
+
+    } catch (err) {
+      setAuthError(
+        err.response?.data?.message || "Échec de la connexion"
+      );
+    } finally {
+      setLoading(false);
+    }
+
+    
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 sm:p-10 bg-white rounded-3xl shadow-2xl max-w-md mx-auto mt-24 mb-12 transform hover:scale-[1.01] transition-transform duration-300">
+    <div className="flex flex-col items-center justify-center p-6 sm:p-10 bg-white rounded-3xl shadow-2xl max-w-md mx-auto mt-24 mb-12">
       <Calendar className="h-10 w-10 mb-4" style={{ color: customBlue }} />
-      
+
       <h2 className="text-2xl font-bold text-gray-800 mb-2">Connexion</h2>
 
       <p className="text-center text-sm text-gray-500 mb-6">
@@ -44,13 +88,7 @@ const LoginPage = ({ onSubmit, authError, loading, switchToRegister }) => {
         </div>
       )}
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(email, password);
-        }}
-        className="w-full"
-      >
+      <form onSubmit={handleLogin} className="w-full">
         <InputField
           Icon={Mail}
           type="email"

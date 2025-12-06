@@ -35,7 +35,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged in',
             'token' => $token,
-            'user' => $user
+            'role'=>$user->role
         ]);
     }
     public function logout(Request $request)
